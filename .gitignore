@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# Keep these tracked
+!.gitignore
+!/skills/
+!/skills/**
+!/commands/
+!/commands/**
