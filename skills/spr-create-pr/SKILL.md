@@ -44,8 +44,7 @@ Make sure the remote branch is up to date with local:
 Invoke the `spr-pr-description` skill using the Skill tool. It will:
 
 - Analyze commits and the full diff against main.
-- Draft a structured PR description (summary, changes, areas affected, test plan).
-- Show the draft to the user for approval.
+- Write a structured PR description (summary, changes, areas affected, test plan).
 - Create the PR via `gh pr create`.
 
 The PR URL will be printed by `gh pr create` — capture it for the next step.
