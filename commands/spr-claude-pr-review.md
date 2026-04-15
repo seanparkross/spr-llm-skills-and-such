@@ -1,4 +1,4 @@
-Fetch the most recent Claude AI PR reviewer comment for the current branch's pull request, verify whether its findings are valid, and enter plan mode to fix any real issues.
+Fetch the most recent Claude AI PR reviewer comment for the current branch's pull request, verify whether its findings are valid, fix any real issues, and post a summary comment back to the PR documenting what was fixed and what was skipped.
 
 ## Steps
 
@@ -44,6 +44,35 @@ Present a summary to the user showing each finding, your assessment, and a brief
 
 ### 5. Plan fixes for valid issues
 
-If there are valid findings that need fixes, enter plan mode and write a plan that addresses each one. Group related fixes together. The plan should be concise — these are typically small targeted fixes, not large refactors.
+If there are valid findings that need fixes, enter plan mode and write a plan that addresses each one. Group related fixes together. The plan should be concise — these are typically small targeted fixes, not large refactors. Once the plan is approved, apply the fixes and commit them.
 
-If all findings are invalid or minor, tell the user and do not enter plan mode.
+If all findings are invalid or minor, tell the user and skip the plan step. Either way, proceed to Step 6 to document the disposition on the PR.
+
+### 6. Post summary comment to the PR
+
+After fixes are applied (or findings skipped), post a single comment back to the PR summarising how each finding was handled. Use the PR number captured in Step 1.
+
+Build the comment body in this format:
+
+```
+## Response to Claude PR review
+
+**Fixed:**
+- `<file>:<line>` — <one-line description of the fix>
+
+**Skipped:**
+- `<file>:<line>` — <reason: invalid / minor / out of scope>
+```
+
+Omit any section with no entries. If every finding was skipped, include only the Skipped section so the reviewer can see the feedback was considered. If there were no findings at all, do not post a comment.
+
+Show the drafted comment body to the user in the conversation, then post it with:
+
+```
+gh pr comment <pr-number> --body "$(cat <<'EOF'
+<comment body here>
+EOF
+)"
+```
+
+Report the comment URL returned by `gh pr comment` back to the user.
