@@ -10,15 +10,21 @@ Create a GitHub PR for the current branch, handling pre-flight checks, delegatin
 
 ### Step 1 — Pre-flight checks
 
-Run these in parallel:
+First, fetch the remote so the comparison reflects the actual remote state (local `main` may be stale or ahead of `origin/main`):
+
+```bash
+git fetch origin --quiet
+```
+
+Then run these in parallel:
 
 1. `git status` — check for uncommitted changes (never use the `-uall` flag).
 2. `git branch --show-current` — get the current branch name.
-3. `git log main..HEAD --oneline` — verify there are commits ahead of main.
+3. `git log origin/main..HEAD --oneline` — verify there are commits ahead of the remote default branch.
 
 **Stop if:**
 - The current branch is `main` — tell the user to create a feature branch first.
-- There are no commits ahead of main — tell the user there is nothing to PR.
+- There are no commits ahead of `origin/main` — tell the user there is nothing to PR.
 
 ### Step 2 — Commit any outstanding changes
 
@@ -43,7 +49,7 @@ Make sure the remote branch is up to date with local:
 
 Invoke the `spr-pr-description` skill using the Skill tool. It will:
 
-- Analyze commits and the full diff against main.
+- Analyze commits and the full diff against `origin/main`.
 - Write a structured PR description (summary, changes, areas affected, test plan).
 - Create the PR via `gh pr create`.
 

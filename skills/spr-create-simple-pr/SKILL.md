@@ -10,15 +10,21 @@ Push the current branch and open a minimal PR. No drafting ceremony, no approval
 
 ### Step 1 — Pre-flight checks
 
-Run in parallel:
+First, fetch the remote so the comparison reflects the actual remote state (local `main` may be stale or ahead of `origin/main`):
+
+```bash
+git fetch origin --quiet
+```
+
+Then run in parallel:
 
 1. `git status` — check for uncommitted changes (never use `-uall`).
 2. `git branch --show-current` — get the current branch name.
-3. `git log main..HEAD --oneline` — confirm there are commits ahead of main.
+3. `git log origin/main..HEAD --oneline` — confirm there are commits ahead of the remote default branch.
 
 **Stop if:**
 - The branch is `main` — tell the user to create a feature branch first.
-- There are no commits ahead of main — nothing to PR.
+- There are no commits ahead of `origin/main` — nothing to PR.
 
 ### Step 2 — Commit outstanding changes
 
@@ -42,17 +48,19 @@ Skip if the working tree is clean.
 Use `gh pr create` directly. Do **not** invoke `spr-pr-description`.
 
 - **Title**: the most recent commit subject if there's only one commit, otherwise a short summary of the branch's intent inferred from commit subjects. Under 72 chars, present tense imperative.
-- **Body**: the bulleted list of commit subjects on this branch. That's it. No summary section, no test plan, no review notes.
+- **Body**: a 1–2 sentence description of what the branch does and why, followed by the bulleted list of commit subjects. Keep the description tight — enough to orient a reviewer at a glance, no more. No summary section, no test plan, no review notes.
 
 ```bash
 gh pr create --base main --title "<title>" --body "$(cat <<'EOF'
+<one or two sentence description of the change and its purpose>
+
 - <commit subject 1>
 - <commit subject 2>
 EOF
 )"
 ```
 
-If there's only one commit, the body can just be that commit's subject (or omitted with `--body ""`).
+If there's only one commit, the description can be omitted and the body can just be that commit's subject (or omitted with `--body ""`).
 
 Do not show the draft to the user for approval. Just create it.
 
