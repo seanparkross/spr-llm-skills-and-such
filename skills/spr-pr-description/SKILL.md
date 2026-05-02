@@ -10,14 +10,20 @@ You are drafting or improving a GitHub PR description for the current branch.
 
 ### Step 1 — Gather context
 
-Run these in parallel where possible:
+First, fetch the remote so the comparison reflects the actual remote state — local `main` may be stale or ahead of `origin/main`:
+
+```bash
+git fetch origin --quiet
+```
+
+Then run these in parallel where possible (always diff against `origin/main`, not local `main`):
 
 1. `git branch --show-current` — get the branch name.
-2. `git merge-base main HEAD` — find where this branch diverged.
-3. `git log main..HEAD --oneline` — list commits on this branch.
-4. `git log main..HEAD --format='%s%n%b---'` — read full commit messages with bodies.
-5. `git diff main...HEAD --stat` — file-level summary of what changed.
-6. `git diff main...HEAD` — full diff (skip lock files and generated output).
+2. `git merge-base origin/main HEAD` — find where this branch diverged from the remote default branch.
+3. `git log origin/main..HEAD --oneline` — list commits on this branch.
+4. `git log origin/main..HEAD --format='%s%n%b---'` — read full commit messages with bodies.
+5. `git diff origin/main...HEAD --stat` — file-level summary of what changed.
+6. `git diff origin/main...HEAD` — full diff (skip lock files and generated output).
 7. `gh pr view --json number,title,body,url 2>/dev/null` — fetch the existing PR (if any).
 
 If there is no PR yet, note that and continue — you will draft a fresh description.
