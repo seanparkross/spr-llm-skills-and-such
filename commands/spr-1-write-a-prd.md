@@ -18,6 +18,8 @@ Before interviewing the user, explore the repo to verify their assertions and un
 - Existing patterns, conventions, and abstractions to follow or build on
 - Anything that contradicts or complicates the user's description of the current state
 
+Share findings with the user before starting the interview, especially anything that contradicts their description. The interview should be grounded in the codebase as it actually is, not as either party assumed.
+
 ### 3. Interview the user
 
 Interview the user relentlessly about every aspect of the plan until you reach a shared, unambiguous understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.
@@ -32,6 +34,8 @@ Cover at minimum:
 - Every integration with existing modules or external systems
 - Any decisions that would be difficult or expensive to reverse
 
+When a branch feels resolved, summarise the decisions back to the user and ask whether anything is missing before moving on. Draft the corresponding PRD section now rather than waiting until the end — it is cheaper to correct misunderstandings one section at a time than after a full document lands.
+
 ### 4. Design the modules
 
 Sketch out the major modules that will be built or modified. Actively look for opportunities to extract deep modules — modules that encapsulate significant functionality behind a simple, stable, testable interface.
@@ -44,9 +48,9 @@ For each module, confirm with the user:
 - Should tests be written for this module?
 - Which parts of its interface are likely to change, and which are stable?
 
-### 5. Write the PRD
+### 5. Assemble the PRD
 
-Once you have a complete shared understanding, write the PRD using the template below and save it to the file the user specified.
+By this point, most sections should already be drafted from the running summaries in steps 3 and 4. Stitch them together into the template below, fill in any sections that were not yet drafted (Problem Statement, Solution, Out of Scope, Open Questions, Further Notes), and save to the file the user specified.
 
 <prd-template>
 # PRD: <feature name>
@@ -71,14 +75,12 @@ Be exhaustive. Include stories for error states, edge cases, and secondary actor
 
 Decisions made during the interview that constrain or shape the implementation. Include:
 
-- Modules to be built or modified
-- Interfaces of those modules
 - Architectural decisions and their rationale
 - Schema changes
 - API contracts
 - Specific interaction patterns
 
-Do NOT include file paths or code snippets — these become outdated quickly.
+Module-level detail belongs in Module Design, not here. Do NOT include file paths or code snippets — these become outdated quickly.
 
 ## Module Design
 
@@ -101,7 +103,7 @@ Explicit list of things that will not be addressed in this PRD. Be specific — 
 
 ## Open Questions
 
-Any unresolved questions that could not be answered during the interview. Each question should have an owner and a suggested resolution path.
+Any unresolved questions that could not be answered during the interview, with a suggested resolution path for each.
 
 ## Further Notes
 
