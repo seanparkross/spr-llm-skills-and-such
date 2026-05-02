@@ -1,10 +1,4 @@
----
-name: spr-rebase
-description: Rebase the current branch onto origin/main, with conflict inventory and guided resolution.
-user-invocable: true
----
-
-Rebase this worktree branch onto `origin/main`.
+Rebase the current branch onto origin/main, with conflict inventory and guided resolution.
 
 ## Process
 
